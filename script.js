@@ -15,7 +15,7 @@ const loadImage = (image) => {
 		img.src = image.url;
 		
 		// Resolve the promise when the image is loaded
-		img.onloading = () => resolve(img);
+		img.onload = () => resolve(img);
 
 		// Reject if loading fails
 		img.onerror = () => reject(new Error(`Failed to load image's URL: ${image.url}`));
@@ -42,8 +42,5 @@ btn.addEventListener("click", () => {
 		.catch((error) => {
 			 // Handle errors if any image fails to load
 			console.error(error.message);
-		});
-	
-})
-
-
+		});	
+});
