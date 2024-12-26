@@ -10,37 +10,33 @@ const images = [
 
 // Function to download an image
 const loadImage = (image) => {
-	return new Promise((resolve, reject) => {
-		const img = new Image();
-		img.src = image.url;
-		
-		// Resolve the promise when the image is loaded
-		img.onload = () => resolve(img);
-
-		// Reject if loading fails
-		img.onerror = () => reject(new Error(`Failed to load image's URL: ${image.url}`));
-
-		});
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = image.url;
+    img.onload = () => resolve(img); // Resolve the promise when the image is loaded
+    img.onerror = () =>
+      reject(new Error(`Failed to load image's URL: ${image.url}`)); // Reject if loading fails
+  });
 };
 
 // Function to handle the click event and download images in parallel
 btn.addEventListener("click", () => {
- // Map the array of image URLs into an array of Promises
-	const promises = images.map((image) => loadImage(image));
+  // Map the array of image URLs into an array of Promises
+  const promises = images.map((image) => loadImage(image));
 
-	// Use Promise.all to download all images in parallel
-	Promise.all(promises)
-		.then((loadImages) => {
-			// Clear any previous images
-			output.innerHTML = "";
+  // Use Promise.all to download all images in parallel
+  Promise.all(promises)
+    .then((loadedImages) => {
+      // Clear any previous images
+      output.innerHTML = "";
 
-			// Append all successfully loaded images to the output div
-			loadImages.forEach((img) => {
-				output.appendChild(img);
-			});
-		})
-		.catch((error) => {
-			 // Handle errors if any image fails to load
-			console.error(error.message);
-		});	
+      // Append all successfully loaded images to the output div
+      loadedImages.forEach((img) => {
+        output.appendChild(img);
+      });
+    })
+    .catch((error) => {
+      // Handle errors if any image fails to load
+      console.error(error.message);
+    });
 });
